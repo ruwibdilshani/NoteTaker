@@ -45,8 +45,6 @@ public final class NoteServiceIMPL implements NoteService {
                 break;
             }
             }
-
-
     }
 
     @Override

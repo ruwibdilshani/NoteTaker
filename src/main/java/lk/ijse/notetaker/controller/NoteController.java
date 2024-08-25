@@ -4,6 +4,7 @@ import lk.ijse.notetaker.service.NoteService;
 import lk.ijse.notetaker.util.AppUtil;
 import lk.ijse.notetaker.dto.Note;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,7 @@ public class NoteController {
     }
 
 
-//Todo: CRUD of the note
+//Todo:CRUD of the note
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createNote(@RequestBody Note note){
@@ -65,7 +66,7 @@ public class NoteController {
 
     }
 
-
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/{noteId}")
     public void deleteNote(@PathVariable ("noteId") String noteId) {
 //        System.out.println(noteId + " Deleted");
