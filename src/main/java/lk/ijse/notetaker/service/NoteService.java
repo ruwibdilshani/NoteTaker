@@ -1,10 +1,10 @@
-package lk.ijse.notetaker.bo;
+package lk.ijse.notetaker.service;
 
 import lk.ijse.notetaker.dto.Note;
 
 import java.util.List;
 
-public sealed interface NoteBo permits NoteBOIMPL{
+public sealed interface NoteService permits NoteServiceIMPL {
     String saveData(Note note);
 
     boolean updateNote(String noteId, Note note);
@@ -14,5 +14,6 @@ public sealed interface NoteBo permits NoteBOIMPL{
     Note getSelectedNote(String noteId);
 
     List<Note> getAllNotes();
+
 }
 
