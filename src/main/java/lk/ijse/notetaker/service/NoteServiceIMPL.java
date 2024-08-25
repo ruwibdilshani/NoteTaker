@@ -26,8 +26,16 @@ public final class NoteServiceIMPL implements NoteService {
     }
 
     @Override
-    public boolean updateNote(String noteId, Note note) {
-        return false;
+    public void updateNote(String noteId, Note incomeNote) {
+        for (Note updateNote : SaveNoteTmp) {
+            if (updateNote.getNoteId().equals(noteId)) {
+                updateNote.setNoteDesc(incomeNote.getNoteDesc());
+                updateNote.setNoteTitle(incomeNote.getNoteTitle());
+                updateNote.setPriorityLevel(incomeNote.getPriorityLevel());
+                updateNote.setCreateDate(incomeNote.getCreateDate());
+            }
+
+        }
     }
 
     @Override

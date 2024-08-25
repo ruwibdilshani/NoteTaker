@@ -7,7 +7,9 @@ import java.util.List;
 public sealed interface NoteService permits NoteServiceIMPL {
     String saveData(Note note);
 
-    boolean updateNote(String noteId, Note note);
+//    boolean updateNote(String noteId, Note note);
+ void updateNote(String noteId,Note note);
+
 
     boolean deleteNote(String noteId);
 

@@ -59,8 +59,10 @@ public class NoteController {
 
     @PatchMapping(value = "/{noteId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public void updateNote(@PathVariable ("noteId") String noteId, @RequestBody Note note) {
-        System.out.println(noteId);
-        System.out.println(note+ " Updated");
+//        System.out.println(noteId);
+//        System.out.println(note+ " Updated");
+        noteService.updateNote(noteId, note);
+
     }
 
 
