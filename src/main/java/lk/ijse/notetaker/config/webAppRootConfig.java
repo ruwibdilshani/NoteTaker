@@ -1,6 +1,7 @@
 package lk.ijse.notetaker.config;
 
 import jakarta.persistence.EntityManagerFactory;
+import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -26,7 +27,13 @@ import javax.sql.DataSource;
 public class webAppRootConfig {
 
     @Bean
+    public ModelMapper modelMapper(){
+        return new ModelMapper();
+    }
+    @Bean
     public DataSource dataSource() {
+
+
 
 //        EmbeddedDatabaseBuilder builder = new EmbeddedDatabaseBuilder();
 //        return builder.setType(EmbeddedDatabaseType.HSQL).build();
