@@ -66,12 +66,16 @@ public class NoteController {
 
     }
 
-    @ResponseStatus(HttpStatus.NO_CONTENT)
+//    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/{noteId}")
-    public void deleteNote(@PathVariable ("noteId") String noteId) {
+  //  public void deleteNote(@PathVariable ("noteId") String noteId) {
+    public ResponseEntity<String> deleteNote(@PathVariable ("noteId") String noteId) {
+
 //        System.out.println(noteId + " Deleted");
-        noteService.deleteNote(noteId);
-}
+//        noteService.deleteNote(noteId);
+        return noteService.deleteNote(noteId) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+
+    }
 
 
 }
