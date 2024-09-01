@@ -8,7 +8,7 @@ public  interface NoteService  {
     String saveData(Note note);
 
 //    boolean updateNote(String noteId, Note note);
- void updateNote(String noteId,Note note);
+ boolean updateNote(String noteId,Note note);
 
 
     boolean deleteNote(String noteId);

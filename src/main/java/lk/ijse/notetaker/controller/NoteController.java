@@ -59,10 +59,13 @@ public class NoteController {
 
 
     @PatchMapping(value = "/{noteId}", produces = MediaType.APPLICATION_JSON_VALUE)
-    public void updateNote(@PathVariable ("noteId") String noteId, @RequestBody Note note) {
+  //  public void updateNote(@PathVariable ("noteId") String noteId, @RequestBody Note note) {
+    public ResponseEntity<String> updateNote(@PathVariable ("noteId") String noteId, @RequestBody Note note) {
+
+        return noteService.updateNote(noteId,note) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
 //        System.out.println(noteId);
 //        System.out.println(note+ " Updated");
-        noteService.updateNote(noteId, note);
+        // noteService.updateNote(noteId, note);
 
     }
 
