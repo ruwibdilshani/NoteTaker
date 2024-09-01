@@ -9,7 +9,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 @Configuration
 @ComponentScan(basePackages = "lk.ijse.notetaker")
 @EnableWebMvc
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = "lk.ijse.notetaker")
 @EnableTransactionManagement
 public class webAppConfig {
 

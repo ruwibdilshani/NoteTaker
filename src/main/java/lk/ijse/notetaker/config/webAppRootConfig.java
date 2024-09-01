@@ -19,7 +19,7 @@ import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 import javax.sql.DataSource;
 
 @Configuration
-@EnableJpaRepositories
+@EnableJpaRepositories(basePackages = "lk.ijse.notetaker")
 @EnableTransactionManagement
 @ComponentScan(basePackages = "lk.ijse.notetaker")
 @EnableWebMvc

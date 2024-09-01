@@ -4,7 +4,7 @@ import lk.ijse.notetaker.dto.Note;
 
 import java.util.List;
 
-public sealed interface NoteService permits NoteServiceIMPL {
+public  interface NoteService  {
     String saveData(Note note);
 
 //    boolean updateNote(String noteId, Note note);
