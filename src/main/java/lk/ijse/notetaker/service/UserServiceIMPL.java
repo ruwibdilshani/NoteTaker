@@ -1,13 +1,32 @@
 package lk.ijse.notetaker.service;
 
+import jakarta.transaction.Transactional;
+import lk.ijse.notetaker.Dao.UserDao;
 import lk.ijse.notetaker.dto.UserDTO;
+import lk.ijse.notetaker.util.AppUtil;
+import lk.ijse.notetaker.util.Mapping;
+import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Transactional
+@Service
+@RequiredArgsConstructor
 public class UserServiceIMPL implements UserService{
+
+    @Autowired
+    private  final UserDao userDao;
+    @Autowired
+    private final Mapping mapping;
+
     @Override
     public String saveUser(UserDTO userDTO) {
-        return "";
+        userDTO.setUserId(AppUtil.createUserId());
+        userDao.save(mapping.convertToUserEntity(userDTO));
+        return "User Saved Successfully..!";
+
     }
 
     @Override
