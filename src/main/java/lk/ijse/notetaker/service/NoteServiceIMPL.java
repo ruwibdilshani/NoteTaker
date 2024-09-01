@@ -42,7 +42,10 @@ public class NoteServiceIMPL implements NoteService {
 
     @Override
     public Note getSelectedNote(String noteId) {
-        return null;
+     //  NoteEntity selectedNote = noteDao.getReferenceById(noteId);
+       //convert krnn on ihatha eka dto ekkata
+       return mapping.convertToDTO(noteDao.getReferenceById(noteId));
+
     }
 
     @Override
@@ -51,7 +54,7 @@ public class NoteServiceIMPL implements NoteService {
 //        List<Note> note = mapping.convertToDTO(getAllNotes);
 //        return note;
 
-        //simplify code
+        //--------------------------------simplify code
          return mapping.convertToDTO(noteDao.findAll());
     }
 
