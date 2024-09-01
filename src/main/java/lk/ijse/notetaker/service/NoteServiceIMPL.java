@@ -3,6 +3,7 @@ package lk.ijse.notetaker.service;
 import jakarta.transaction.Transactional;
 import lk.ijse.notetaker.Dao.NoteDao;
 import lk.ijse.notetaker.dto.Note;
+import lk.ijse.notetaker.entity.NoteEntity;
 import lk.ijse.notetaker.util.AppUtil;
 import lk.ijse.notetaker.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +47,12 @@ public class NoteServiceIMPL implements NoteService {
 
     @Override
     public List<Note> getAllNotes() {
-        return List.of();
+//        List<NoteEntity> getAllNotes = noteDao.findAll();
+//        List<Note> note = mapping.convertToDTO(getAllNotes);
+//        return note;
+
+        //simplify code
+         return mapping.convertToDTO(noteDao.findAll());
     }
 
 
