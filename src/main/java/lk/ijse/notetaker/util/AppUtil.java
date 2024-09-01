@@ -11,4 +11,8 @@ public class AppUtil {
         return "NOTE"+ UUID.randomUUID().toString();
     }
 
+    public static String createUserId(){
+        return "USER-"+UUID.randomUUID();
+    }
+
 }
