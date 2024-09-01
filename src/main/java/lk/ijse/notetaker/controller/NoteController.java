@@ -17,17 +17,21 @@ public class NoteController {
     @Autowired
     private final NoteService noteService;
 
+    @GetMapping("health")
+    public String healthCheck(){
+        return "Note taker is Running";
+    }
+
     public NoteController(NoteService noteService) {
         this.noteService = noteService;
     }
 
 
-//Todo:CRUD of the note
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<String> createNote(@RequestBody Note note){
 
-//       //Todo:Handle with Bo
+
 //        note.setNoteId(AppUtil.createNoteId());
 //        System.out.println(note);
 //        return  ResponseEntity.ok("note created Succesfully.");
