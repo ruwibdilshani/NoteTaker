@@ -3,6 +3,7 @@ package lk.ijse.notetaker.service;
 import jakarta.transaction.Transactional;
 import lk.ijse.notetaker.Dao.UserDao;
 import lk.ijse.notetaker.dto.UserDTO;
+import lk.ijse.notetaker.entity.UserEntity;
 import lk.ijse.notetaker.util.AppUtil;
 import lk.ijse.notetaker.util.Mapping;
 import lombok.RequiredArgsConstructor;
@@ -46,7 +47,8 @@ public class UserServiceIMPL implements UserService{
 
     @Override
     public UserDTO getSelectedUser(String userId) {
-        return null;
+       UserEntity userEntityByUserId = userDao.getUserEntitiesByUserId(userId);
+       return mapping.convertToUserDTO(userEntityByUserId);
     }
 
     @Override
