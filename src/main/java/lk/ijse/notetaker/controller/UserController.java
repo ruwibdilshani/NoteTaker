@@ -2,8 +2,9 @@ package lk.ijse.notetaker.controller;
 
 
 import lk.ijse.notetaker.Dao.UserDao;
+import lk.ijse.notetaker.Expection.UserNotFoundException;
+import lk.ijse.notetaker.customObj.UserResponse;
 import lk.ijse.notetaker.dto.UserDTO;
-import lk.ijse.notetaker.entity.UserEntity;
 import lk.ijse.notetaker.service.UserService;
 import lk.ijse.notetaker.util.AppUtil;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +15,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/users")
@@ -66,7 +66,7 @@ public class UserController {
 
     //GET SELECTED
     @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public  UserDTO getSelectedUser(@PathVariable ("id") String userId){
+    public UserResponse getSelectedUser(@PathVariable ("id") String userId){
         return userService.getSelectedUser(userId);
     }
 
@@ -80,7 +80,7 @@ public class UserController {
 
     //UPDATE
     @PatchMapping(value = "/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> updateUser(
+    public ResponseEntity<Void> updateUser(
             @PathVariable ("id") String id,
             @RequestPart("updateFirstName") String updateFirstName,
             @RequestPart ("updateLastName") String updateLastName,
@@ -88,14 +88,22 @@ public class UserController {
             @RequestPart ("updatePassword") String updatePassword,
             @RequestPart ("updateProfilePic") String updateProfilePic
     ){
-        String updateBase64ProfilePic = AppUtil.toBase64ProfilePic(updateProfilePic);
-        var updateUser = new UserDTO();
-        updateUser.setUserId(id);
-        updateUser.setFirstName(updateFirstName);
-        updateUser.setLastName(updateLastName);
-        updateUser.setPassword(updatePassword);
-        updateUser.setEmail(updateEmail);
-        updateUser.setProfilePic(updateBase64ProfilePic);
-        return userService.updateUser(updateUser)? new ResponseEntity<>(HttpStatus.NO_CONTENT): new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        try {
+            String updateBase64ProfilePic = AppUtil.toBase64ProfilePic(updateProfilePic);
+            var updateUser = new UserDTO();
+            updateUser.setUserId(id);
+            updateUser.setFirstName(updateFirstName);
+            updateUser.setLastName(updateLastName);
+            updateUser.setPassword(updatePassword);
+            updateUser.setEmail(updateEmail);
+            updateUser.setProfilePic(updateBase64ProfilePic);
+            userService.updateUser(updateUser);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (UserNotFoundException e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
 }

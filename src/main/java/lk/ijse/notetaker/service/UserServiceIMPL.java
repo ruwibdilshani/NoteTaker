@@ -2,19 +2,16 @@ package lk.ijse.notetaker.service;
 
 import jakarta.transaction.Transactional;
 import lk.ijse.notetaker.Dao.UserDao;
+import lk.ijse.notetaker.Expection.UserNotFoundException;
+import lk.ijse.notetaker.customObj.UserErrorResponse;
+import lk.ijse.notetaker.customObj.UserResponse;
 import lk.ijse.notetaker.dto.UserDTO;
 import lk.ijse.notetaker.entity.UserEntity;
 import lk.ijse.notetaker.util.AppUtil;
 import lk.ijse.notetaker.util.Mapping;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestPart;
 
 import java.util.List;
 import java.util.Optional;
@@ -41,10 +38,11 @@ public class UserServiceIMPL implements UserService{
     }
 
 
-    public boolean updateUser(UserDTO userDTO) {
+    public void updateUser(UserDTO userDTO) {
         Optional<UserEntity> tmpUser = userDao.findById(userDTO.getUserId());
         if(!tmpUser.isPresent()){
-            return false;
+          //  return false;
+            throw new UserNotFoundException("User not found");
         }else {
             tmpUser.get().setFirstName(userDTO.getFirstName());
             tmpUser.get().setLastName(userDTO.getLastName());
@@ -52,7 +50,7 @@ public class UserServiceIMPL implements UserService{
             tmpUser.get().setPassword(userDTO.getPassword());
             tmpUser.get().setProfilePic(userDTO.getProfilePic());
         }
-        return true;
+
     }
 
     @Override
@@ -66,9 +64,18 @@ public class UserServiceIMPL implements UserService{
     }
 
     @Override
-    public UserDTO getSelectedUser(String userId) {
-       UserEntity userEntityByUserId = userDao.getUserEntitiesByUserId(userId);
-       return mapping.convertToUserDTO(userEntityByUserId);
+//    public UserDTO getSelectedUser(String userId) {
+//       UserEntity userEntityByUserId = userDao.getUserEntitiesByUserId(userId);
+//       return mapping.convertToUserDTO(userEntityByUserId);
+//    }
+
+    public UserResponse getSelectedUser(String userId) {
+        if (userDao.existsById(userId)) {
+            UserEntity userEntityByUserId = userDao.getUserEntitiesByUserId(userId);
+            return mapping.convertToUserDTO(userEntityByUserId);
+        } else {
+            return new UserErrorResponse(0, "User not found");
+        }
     }
 
     @Override
