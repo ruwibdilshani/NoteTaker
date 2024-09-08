@@ -2,6 +2,7 @@ package lk.ijse.notetaker.controller;
 
 
 import lk.ijse.notetaker.Dao.UserDao;
+import lk.ijse.notetaker.Expection.DataPersistFailedException;
 import lk.ijse.notetaker.Expection.UserNotFoundException;
 import lk.ijse.notetaker.customObj.UserResponse;
 import lk.ijse.notetaker.dto.UserDTO;
@@ -28,32 +29,45 @@ public class UserController {
 
     //SAVE USER
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<String> saveUser(
+//    public ResponseEntity<String> saveUser(
+    public ResponseEntity<Void> saveUser(
      @RequestPart("firstName") String firstName,
      @RequestPart("lastName") String lastName,
      @RequestPart("email") String email,
      @RequestPart("password") String password,
      @RequestPart("profilePic") String profilePic) {
 
-        //Handle Profile Picture
-        String base64ProfilePic =AppUtil.toBase64ProfilePic(profilePic);
-
-        //build the user object
-        UserDTO buildUserDTO = new UserDTO();
-        buildUserDTO.setFirstName(firstName);
-        buildUserDTO.setLastName(lastName);
-        buildUserDTO.setEmail(email);
-        buildUserDTO.setPassword(password);
-        buildUserDTO.setProfilePic(base64ProfilePic);
-
-        //send to the service layer
-        var saveStatus = userService.saveUser(buildUserDTO);
-        if (saveStatus.contains("User Saved Successfully...")){
-            return new ResponseEntity<>(userService.saveUser(buildUserDTO), HttpStatus.CREATED);
-        }else {
+//        //Handle Profile Picture
+//        String base64ProfilePic =AppUtil.toBase64ProfilePic(profilePic);
+//
+//        //build the user object
+//        UserDTO buildUserDTO = new UserDTO();
+//        buildUserDTO.setFirstName(firstName);
+//        buildUserDTO.setLastName(lastName);
+//        buildUserDTO.setEmail(email);
+//        buildUserDTO.setPassword(password);
+//        buildUserDTO.setProfilePic(base64ProfilePic);
+//
+//        //send to the service layer
+//        var saveStatus = userService.saveUser(buildUserDTO);
+//        if (saveStatus.contains("User Saved Successfully...")){
+        try {
+            String base64ProfilePic = AppUtil.toBase64ProfilePic(profilePic);
+            // build the user object
+            UserDTO buildUserDTO = new UserDTO();
+            buildUserDTO.setFirstName(firstName);
+            buildUserDTO.setLastName(lastName);
+            buildUserDTO.setEmail(email);
+            buildUserDTO.setPassword(password);
+            buildUserDTO.setProfilePic(base64ProfilePic);
+            //send to the service layer
+            userService.saveUser(buildUserDTO);
+            return new ResponseEntity<>(HttpStatus.CREATED);
+        }catch (DataPersistFailedException e){
+            return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+        }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
-
     }
 
 

@@ -6,7 +6,7 @@ import lk.ijse.notetaker.dto.UserDTO;
 import java.util.List;
 
 public interface UserService {
-  String saveUser(UserDTO userDTO);
+  void saveUser(UserDTO userDTO);
   //boolean updateUser(UserDTO userDTO);
   void updateUser(UserDTO userDTO);
  // boolean deleteUser(String userId);

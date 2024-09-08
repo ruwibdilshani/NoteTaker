@@ -2,6 +2,7 @@ package lk.ijse.notetaker.service;
 
 import jakarta.transaction.Transactional;
 import lk.ijse.notetaker.Dao.UserDao;
+import lk.ijse.notetaker.Expection.DataPersistFailedException;
 import lk.ijse.notetaker.Expection.UserNotFoundException;
 import lk.ijse.notetaker.customObj.UserErrorResponse;
 import lk.ijse.notetaker.customObj.UserResponse;
@@ -27,13 +28,11 @@ public class UserServiceIMPL implements UserService{
     private final Mapping mapping;
 
     @Override
-    public String saveUser(UserDTO userDTO) {
+    public void saveUser(UserDTO userDTO) {
         userDTO.setUserId(AppUtil.createUserId());
         UserEntity saveUser = userDao.save(mapping.convertToUserEntity(userDTO));
-        if (saveUser!=null && saveUser.getUserId() != null){
-            return "User Saved Successfully..!";
-        }else {
-            return "Save Failed ...!";
+        if(saveUser == null && saveUser.getUserId() == null ) {
+            throw new DataPersistFailedException("Cannot data saved");
         }
     }
 
