@@ -47,7 +47,13 @@ public class UserController {
         buildUserDTO.setProfilePic(base64ProfilePic);
 
         //send to the service layer
-        return new ResponseEntity<>(userService.saveUser(buildUserDTO), HttpStatus.CREATED);
+        var saveStatus = userService.saveUser(buildUserDTO);
+        if (saveStatus.contains("User Saved Successfully...")){
+            return new ResponseEntity<>(userService.saveUser(buildUserDTO), HttpStatus.CREATED);
+        }else {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
     }
 
 
