@@ -54,12 +54,12 @@ public class UserServiceIMPL implements UserService{
     }
 
     @Override
-    public boolean deleteUser(String userId) {
-        if (userDao.existsById(userId)){
-            userDao.deleteById(userId);
-            return true;
+    public void deleteUser(String userId) {
+        Optional<UserEntity> selectedUserId = userDao.findById(userId);
+        if(selectedUserId.isPresent()){
+            throw new UserNotFoundException("User not found");
         }else {
-            return false;
+            userDao.deleteById(userId);
         }
     }
 

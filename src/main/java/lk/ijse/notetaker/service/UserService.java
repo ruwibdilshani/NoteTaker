@@ -9,8 +9,10 @@ public interface UserService {
   String saveUser(UserDTO userDTO);
   //boolean updateUser(UserDTO userDTO);
   void updateUser(UserDTO userDTO);
-  boolean deleteUser(String userId);
-//  UserDTO getSelectedUser(String userId);
+ // boolean deleteUser(String userId);
+ void deleteUser(String userId);
+
+    //  UserDTO getSelectedUser(String userId);
  UserResponse getSelectedUser(String userId);
   List<UserDTO> getAllUsers();
 }
