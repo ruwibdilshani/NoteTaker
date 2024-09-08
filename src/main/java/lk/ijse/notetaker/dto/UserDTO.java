@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @AllArgsConstructor
@@ -20,5 +21,7 @@ public class UserDTO implements Serializable {
     private String email;
     private String password;
     private String profilePic;
-    private List<Note> notes;
+    //private List<Note> notes;
+    private List<Note> notes = new ArrayList<>();
+
 }

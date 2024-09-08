@@ -8,9 +8,16 @@ import lk.ijse.notetaker.util.AppUtil;
 import lk.ijse.notetaker.util.Mapping;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestPart;
 
 import java.util.List;
+import java.util.Optional;
 
 @Transactional
 @Service
@@ -30,9 +37,18 @@ public class UserServiceIMPL implements UserService{
 
     }
 
-    @Override
-    public boolean updateUser(String userId, UserDTO userDTO) {
-        return false;
+    public boolean updateUser(UserDTO userDTO) {
+        Optional<UserEntity> tmpUser = userDao.findById(userDTO.getUserId());
+        if(!tmpUser.isPresent()){
+            return false;
+        }else {
+            tmpUser.get().setFirstName(userDTO.getFirstName());
+            tmpUser.get().setLastName(userDTO.getLastName());
+            tmpUser.get().setEmail(userDTO.getEmail());
+            tmpUser.get().setPassword(userDTO.getPassword());
+            tmpUser.get().setProfilePic(userDTO.getProfilePic());
+        }
+        return true;
     }
 
     @Override
