@@ -74,7 +74,7 @@ public class NoteController {
 
 //    @ResponseStatus(HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/{noteId}")
-  //  public void deleteNote(@PathVariable ("noteId") String noteId) {
+
     public ResponseEntity<Void> deleteNote(@PathVariable ("noteId") String noteId) {
 
         try {
