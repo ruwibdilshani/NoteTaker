@@ -30,7 +30,7 @@ public class NoteServiceIMPL implements NoteService {
         note.setNoteId(AppUtil.createNoteId());
         var noteEntity = mapping.convertToEntity(note);
         var savedNoted = noteDao.save(noteEntity);
-        if (savedNoted.getNoteId() != null) {
+        if (savedNoted == null) {
             throw new DataPersistFailedException("Cannot save note");
         }
     }

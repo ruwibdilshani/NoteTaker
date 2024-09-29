@@ -27,7 +27,7 @@ public class Mapping {
     }
 
     public List<Note> convertToDTO(List<NoteEntity> notes) {
-        return modelMapper.map(notes, List.class);
+        return modelMapper.map(notes, new TypeToken<List<Note>>(){}.getType());
     }
 
 
