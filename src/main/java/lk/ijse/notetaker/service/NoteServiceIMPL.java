@@ -51,7 +51,7 @@ public class NoteServiceIMPL implements NoteService {
     @Override
     public void deleteNote(String noteId) {
        Optional<NoteEntity>findId = noteDao.findById(noteId);
-      if(findId.isPresent()){
+      if(!findId.isPresent()){
          throw new NoteNotFound("Note not found");
       }else {
           noteDao.deleteById(noteId);
