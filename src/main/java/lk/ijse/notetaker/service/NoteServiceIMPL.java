@@ -4,6 +4,8 @@ import jakarta.transaction.Transactional;
 import lk.ijse.notetaker.Dao.NoteDao;
 import lk.ijse.notetaker.Expection.DataPersistFailedException;
 import lk.ijse.notetaker.Expection.NoteNotFound;
+import lk.ijse.notetaker.customObj.NoteErrorResponse;
+import lk.ijse.notetaker.customObj.NoteResponse;
 import lk.ijse.notetaker.dto.Note;
 import lk.ijse.notetaker.entity.NoteEntity;
 import lk.ijse.notetaker.util.AppUtil;
@@ -57,10 +59,13 @@ public class NoteServiceIMPL implements NoteService {
     }
 
     @Override
-    public Note getSelectedNote(String noteId) {
-     //  NoteEntity selectedNote = noteDao.getReferenceById(noteId);
-       //convert krnn on ihatha eka dto ekkata
-       return mapping.convertToDTO(noteDao.getReferenceById(noteId));
+    public NoteResponse getSelectedNote(String noteId) {
+
+        if (noteDao.existsById(noteId)) {
+            return mapping.convertToDTO(noteDao.getReferenceById(noteId));
+        }else {
+            return new NoteErrorResponse(0, "Note not found");
+        }
 
     }
 

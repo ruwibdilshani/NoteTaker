@@ -1,5 +1,6 @@
 package lk.ijse.notetaker.service;
 
+import lk.ijse.notetaker.customObj.NoteResponse;
 import lk.ijse.notetaker.dto.Note;
 
 import java.util.List;
@@ -15,7 +16,7 @@ void updateNote(String noteId,Note note);
 
     boolean deleteNote(String noteId);
 
-    Note getSelectedNote(String noteId);
+    NoteResponse getSelectedNote(String noteId);
 
     List<Note> getAllNotes();
 
