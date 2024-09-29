@@ -5,10 +5,12 @@ import lk.ijse.notetaker.dto.Note;
 import java.util.List;
 
 public  interface NoteService  {
-    String saveData(Note note);
+    void saveData(Note note);
 
 //    boolean updateNote(String noteId, Note note);
- boolean updateNote(String noteId,Note note);
+// boolean updateNote(String noteId,Note note);
+void updateNote(String noteId,Note note);
+
 
 
     boolean deleteNote(String noteId);

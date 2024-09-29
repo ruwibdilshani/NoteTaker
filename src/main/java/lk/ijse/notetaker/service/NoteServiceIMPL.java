@@ -2,6 +2,8 @@ package lk.ijse.notetaker.service;
 
 import jakarta.transaction.Transactional;
 import lk.ijse.notetaker.Dao.NoteDao;
+import lk.ijse.notetaker.Expection.DataPersistFailedException;
+import lk.ijse.notetaker.Expection.NoteNotFound;
 import lk.ijse.notetaker.dto.Note;
 import lk.ijse.notetaker.entity.NoteEntity;
 import lk.ijse.notetaker.util.AppUtil;
@@ -9,9 +11,7 @@ import lk.ijse.notetaker.util.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import java.util.Optional;
 
 @Service
@@ -24,25 +24,26 @@ public class NoteServiceIMPL implements NoteService {
     private Mapping mapping;
 
     @Override
-    public String saveData(Note note) {
+    public void  saveData(Note note) {
         note.setNoteId(AppUtil.createNoteId());
         var noteEntity = mapping.convertToEntity(note);
-        noteDao.save(noteEntity);
-        return "Saved successfully in Service layer";
+        var savedNoted = noteDao.save(noteEntity);
+        if (savedNoted.getNoteId() != null) {
+            throw new DataPersistFailedException("Cannot save note");
+        }
     }
 
     @Override
-    public boolean updateNote(String noteId, Note incomeNote) {
+    public void updateNote(String noteId, Note incomeNote) {
       Optional<NoteEntity> tmpNoteEntity= noteDao.findById(noteId);
       if  (!tmpNoteEntity.isPresent()){
-          return false;
-      }else {
+          throw new NoteNotFound("Note not found");      }else {
           tmpNoteEntity.get().setNoteDesc(incomeNote.getNoteDesc());
           tmpNoteEntity.get().setNoteTitle(incomeNote.getNoteTitle());
           tmpNoteEntity.get().setCreateDate(incomeNote.getCreateDate());
           tmpNoteEntity.get().setPriorityLevel(incomeNote.getPriorityLevel());
       }
-      return true;
+
     }
 
     @Override
@@ -69,7 +70,7 @@ public class NoteServiceIMPL implements NoteService {
 //        List<Note> note = mapping.convertToDTO(getAllNotes);
 //        return note;
 
-        //--------------------------------simplify code
+        //-------------------------------------------------------------------------------------------------simplify code
          return mapping.convertToDTO(noteDao.findAll());
     }
 

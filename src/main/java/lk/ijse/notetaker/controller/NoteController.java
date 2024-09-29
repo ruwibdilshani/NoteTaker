@@ -1,5 +1,7 @@
 package lk.ijse.notetaker.controller;
 
+import lk.ijse.notetaker.Expection.DataPersistFailedException;
+import lk.ijse.notetaker.Expection.NoteNotFound;
 import lk.ijse.notetaker.service.NoteService;
 import lk.ijse.notetaker.util.AppUtil;
 import lk.ijse.notetaker.dto.Note;
@@ -17,27 +19,22 @@ public class NoteController {
     @Autowired
     private final NoteService noteService;
 
-    @GetMapping("health")
-    public String healthCheck(){
-        return "Note taker is Running";
-    }
 
     public NoteController(NoteService noteService) {
         this.noteService = noteService;
     }
 
-
-
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> createNote(@RequestBody Note note){
+    public ResponseEntity<Void> createNote(@RequestBody Note note){
 
-
-//        note.setNoteId(AppUtil.createNoteId());
-//        System.out.println(note);
-//        return  ResponseEntity.ok("note created Succesfully.");
-        //Todo: Handle with Service
-        var saveData = noteService.saveData(note);
-        return ResponseEntity.ok(saveData);
+    try{
+        noteService.saveData(note);
+        return new ResponseEntity<>(HttpStatus.CREATED);
+    }catch (DataPersistFailedException e){
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }catch (Exception e){
+        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
     }
 
     @GetMapping(value = "allnotes", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -63,14 +60,15 @@ public class NoteController {
 
 
     @PatchMapping(value = "/{noteId}", produces = MediaType.APPLICATION_JSON_VALUE)
-  //  public void updateNote(@PathVariable ("noteId") String noteId, @RequestBody Note note) {
-    public ResponseEntity<String> updateNote(@PathVariable ("noteId") String noteId, @RequestBody Note note) {
-
-        return noteService.updateNote(noteId,note) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        System.out.println(noteId);
-//        System.out.println(note+ " Updated");
-        // noteService.updateNote(noteId, note);
-
+    public ResponseEntity<Void> updateNote(@PathVariable ("noteId") String noteId, @RequestBody Note note) {
+        try {
+            noteService.updateNote(noteId, note);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }catch (NoteNotFound e){
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
 //    @ResponseStatus(HttpStatus.NO_CONTENT)
