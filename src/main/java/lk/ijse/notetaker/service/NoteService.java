@@ -14,7 +14,7 @@ void updateNote(String noteId,Note note);
 
 
 
-    boolean deleteNote(String noteId);
+    void deleteNote(String noteId);
 
     NoteResponse getSelectedNote(String noteId);
 
